@@ -73,7 +73,8 @@ export const config = {
 
   /** Whether the server is running in AI mock mode (no real API calls). */
   get isMockAiMode(): boolean {
-    return !this.anthropicApiKey || this.anthropicApiKey === '';
+    const liveKey = process.env['ANTHROPIC_API_KEY'] ?? '';
+    return !liveKey || liveKey.trim() === '' || liveKey.startsWith('sk-ant-replace');
   },
 
   /** Rate limiting: max requests per window per IP on AI endpoints. */

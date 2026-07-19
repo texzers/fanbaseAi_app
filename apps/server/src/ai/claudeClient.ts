@@ -42,11 +42,17 @@ let anthropicClient: Anthropic | null = null;
 /**
  * Lazily initializes the Anthropic client on first use.
  * Returns null in mock AI mode — callers must handle this.
+ *
+ * NOTE: We check process.env directly (not the cached config singleton) so that
+ * the test setup's `delete process.env['ANTHROPIC_API_KEY']` takes effect even
+ * after dotenv has already loaded. This guarantees true mock isolation in tests.
  */
 function getClient(): Anthropic | null {
-  if (config.isMockAiMode) return null;
+  const liveKey = process.env['ANTHROPIC_API_KEY'];
+  const isLiveMode = liveKey && liveKey.trim() !== '' && !liveKey.startsWith('sk-ant-replace');
+  if (!isLiveMode) return null;
   if (!anthropicClient) {
-    anthropicClient = new Anthropic({ apiKey: config.anthropicApiKey });
+    anthropicClient = new Anthropic({ apiKey: liveKey });
   }
   return anthropicClient;
 }
@@ -77,6 +83,8 @@ export async function callClaude(options: ClaudeCallOptions): Promise<string> {
 
   // ── Mock mode ────────────────────────────────────────────────────────────
   if (!client) {
+    // Reset cached client in case we switched from live to mock (e.g. in tests)
+    anthropicClient = null;
     return generateMockResponse(userMessage);
   }
 
