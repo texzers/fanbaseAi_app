@@ -211,12 +211,12 @@ export function getRawReadings(): Map<string, CrowdReading> {
  */
 export function getCrowdContextForAI(): string {
   const state = getCrowdState();
-  const summary = state.zones.map((z) => ({
+  const summary = state.zones.map((z: any) => ({
     zone: z.zoneName,
     avgDensity: `${z.avgDensityPercentage}%`,
     maxDensity: `${z.maxDensityPercentage}%`,
     status: z.status,
-    gates: z.gates.map((g) => ({
+    gates: z.gates.map((g: any) => ({
       gate: g.gateId.replace('gate-', 'Gate ').toUpperCase(),
       density: `${g.densityPercentage}%`,
       queueMin: g.queueTimeMin,

@@ -33,7 +33,7 @@ describe('crowdSimulator', () => {
 
     it('should have all four zones', () => {
       const state = getCrowdState();
-      const zoneIds = state.zones.map((z) => z.zoneId);
+      const zoneIds = state.zones.map((z: any) => z.zoneId);
 
       expect(zoneIds).toContain('zone-north');
       expect(zoneIds).toContain('zone-south');

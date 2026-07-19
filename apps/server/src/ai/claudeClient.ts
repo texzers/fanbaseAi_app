@@ -93,7 +93,7 @@ export async function callClaude(options: ClaudeCallOptions): Promise<string> {
     messages,
   });
 
-  const textBlock = response.content.find((b) => b.type === 'text');
+  const textBlock = response.content.find((b: any) => b.type === 'text');
   if (!textBlock || textBlock.type !== 'text') {
     throw new Error('[GenAI] Unexpected response format from Claude API');
   }

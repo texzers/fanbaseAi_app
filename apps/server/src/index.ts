@@ -39,7 +39,7 @@ app.use(helmet());
 const allowedOrigins = config.corsOrigin.split(',').map((o) => o.trim());
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       // Allow requests with no origin (e.g., Postman, curl, same-origin)
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
@@ -55,13 +55,13 @@ app.use(
 app.use(express.json({ limit: '50kb' })); // Tight body size limit
 
 // ── Request Logging (minimal, no PII) ───────────────────────────────────────
-app.use((req, _res, next) => {
+app.use((req: express.Request, _res: express.Response, next: express.NextFunction) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
 });
 
 // ── Health Check ────────────────────────────────────────────────────────────
-app.get('/api/health', (_req, res) => {
+app.get('/api/health', (_req: express.Request, res: express.Response) => {
   res.json({
     status: 'ok',
     version: '1.0.0',

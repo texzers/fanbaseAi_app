@@ -33,8 +33,8 @@ export async function getCurrentCrowdStatus(): Promise<CrowdStatusResponse> {
   } catch (error) {
     // Fall back to a structured text briefing if AI call fails
     const congestedZones = crowdState.zones
-      .filter((z) => z.status === 'congested')
-      .map((z) => z.zoneName)
+      .filter((z: any) => z.status === 'congested')
+      .map((z: any) => z.zoneName)
       .join(', ');
 
     operationalBriefing = congestedZones
