@@ -2,7 +2,6 @@ services:
   - type: web
     name: fanbase-api
     runtime: node
-    repo: https://github.com/texzers/fanbaseAi
     plan: free
     buildCommand: npm install --production=false && npm run build --workspace=packages/shared-types && npm run build --workspace=apps/server
     startCommand: npm run start --workspace=apps/server
