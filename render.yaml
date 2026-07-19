@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: fanbase-api
+    runtime: node
+    repo: https://github.com/texzers/fanbaseAi
+    plan: free
+    buildCommand: npm install --production=false && npm run build --workspace=packages/shared-types && npm run build --workspace=apps/server
+    startCommand: npm run start --workspace=apps/server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: ./data/fanpulse.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://fanpulse-gotzju47r-nananii.vercel.app
+      - key: SIMULATOR_TICK_MS
+        value: "10000"
